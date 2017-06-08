@@ -1,0 +1,14 @@
+# Mac
+.DS_Store
+
+# Cordova Project
+platforms/
+plugins/
+
+# Node.js
+npm-debug.log
+node_modules/
+bower_components/
+
+# VSCode
+.vscode/
