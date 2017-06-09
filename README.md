@@ -2,27 +2,21 @@
 
 Cordova を使って iOS アプリを作成するサンプル。
 
-# Install Cordova Project
+# SQLite Storage
 
-Cordova プロジェクトの導入コマンドは以下のとおり。
+cordova-sqlite-storage を使ってローカル DB を構築するサンプル。
 
-```javascript
-# Cordova をグローバルインストールする
-# バージョンアップによる影響を避けるため、バージョン固定で導入している
-$ npm install -g cordova@7.0.1
+```sh
+# プラグインをインストールする
+$ cordova plugin add cordova-sqlite-storage --save
 
-# Cordova プロジェクトを作る
-$ cordova create CordovaExamples com.example.cordova CordovaExamples
+# ブラウザで実装確認するには、ターゲットプラットフォームに「browser」を追加する
+$ cordova platform add browser --save
 
-# 作成した Cordova プロジェクトに移動する
-$ cd CordovaExamples/
+# 以下で簡易サーバが起動し、http://localhost:8000/ で動作確認できるようになる
+# ブラウザ利用時は window.openDatabase() を使用するため Chrome か Safari を推奨
+$ cordova serve browser
 
-# ターゲットプラットフォームに iOS を追加し、config.xml に追記する
-$ cordova platform add ios --save
-
-# ビルドコマンド
-$ cordova build ios
-
-# iOS シミュレータを起動する
+# iOS シミュレータを起動して確認する
 $ cordova emulate ios
 ```
