@@ -4,7 +4,7 @@ Cordova を使って iOS アプリを作成するサンプル。
 
 # Install Cordova Project
 
-Cordova プロジェクトの導入コマンドは以下のとおり。
+Cordova プロジェクトの導入コマンドは以下のとおり。
 
 ```javascript
 # Cordova をグローバルインストールする
