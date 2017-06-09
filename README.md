@@ -6,7 +6,7 @@ Cordova を使って iOS アプリを作成するサンプル。
 
 Cordova プロジェクトの導入コマンドは以下のとおり。
 
-```javascript
+```sh
 # Cordova をグローバルインストールする
 # バージョンアップによる影響を避けるため、バージョン固定で導入している
 $ npm install -g cordova@7.0.1
