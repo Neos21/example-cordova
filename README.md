@@ -2,19 +2,27 @@
 
 Cordova を使って iOS アプリを作成するサンプル。
 
-# PluginConsole
+# PluginStatusbar
 
-cordova-plugin-console を導入すると XCode のコンソールに `console.log()` が出力されるようになる。
+cordova-plugin-statusbar を導入して、コンテンツがステータスバーに被らないようにする。
 
 ```sh
 # プラグインのインストール
-$ cordova plugin add cordova-plugin-console --save
-
-# iOS アプリとしてビルド
-$ cordova build ios
+$ cordova plugin add cordova-plugin-statusbar --save
 ```
 
-- `./platforms/ios/CordovaExamples.xcodeproj` を XCode で開く。
-- View → Debug Area → Activate Console でコンソールウィンドウを開く。
-- Product → Run で iOS シミュレータが起動する。
-- XCode のコンソールに `console.log()` で記述した内容が出力されていることが分かる。
+`config.xml` に以下のように設定を追加する。
+
+```xml
+<!-- コンテンツがステータスバーに被らないよう false を指定する -->
+<preference name="StatusBarOverlaysWebView" value="false" />
+<!-- ステータスバーの背景色 : 青くする -->
+<preference name="StatusBarBackgroundColor" value="#0088ff" />
+<!-- ステータスバーの文字色 : 白くする -->
+<preference name="StatusBarStyle" value="lightcontent" />
+```
+
+```sh
+# iOS 向けのビルドとシミュレータ起動
+$ cordova emulate ios
+```
