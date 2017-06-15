@@ -1,9 +1,9 @@
 // アプリ唯一のグローバル変数
 var app = {
   
-  // DB インスタンスを保持するプロパティ
+  // 操作するファイル名
   // ------------------------------------------------------------
-  db: null,
+  fileName: 'Temp.txt',
   
   // 初期処理
   // ------------------------------------------------------------
@@ -13,152 +13,174 @@ var app = {
     document.addEventListener("DOMContentLoaded", function() {
       console.log("DOM 構築完了 → イベント定義");
       
-      document.getElementById('open-db').addEventListener('click', this.openDb.bind(this), false);
+      document.getElementById('check').addEventListener('click', this.check.bind(this), false);
       document.getElementById('create').addEventListener('click', this.create.bind(this), false);
-      document.getElementById('select').addEventListener('click', this.select.bind(this), false);
-      document.getElementById('drop').addEventListener('click', this.drop.bind(this), false);
-    }.bind(this), false);
-    
-    document.addEventListener('deviceready', function() {
-      console.log('Device Ready 発火 → DB 接続');
-      
-      this.openDb();
+      document.getElementById('append').addEventListener('click', this.append.bind(this), false);
+      document.getElementById('read').addEventListener('click', this.read.bind(this), false);
+      document.getElementById('delete').addEventListener('click', this.delete.bind(this), false);
     }.bind(this), false);
   },
 
-  // DB 接続
+  // ファイル存在確認
   // ------------------------------------------------------------
-  openDb: function() {
-    console.log('DB 接続 開始');
+  check: function() {
+    console.log('ファイル存在確認 開始');
     
-    if(!window.sqlitePlugin) {
-      console.log('DB 接続 プラグインがないため WebSQL を使用');
-      this._openWebSqlDb();
-      return;
-    }
-    
-    window.sqlitePlugin.selfTest(function() {
-      console.log('DB 接続 SQLitePlugin 使用');
-      
-      this.db = window.sqlitePlugin.openDatabase({
-        name: 'sample.db',
-        location: 'default'
-      });
-      
-      document.getElementById('results').innerHTML = '<li>DB 接続 成功 (SQLitePlugin 使用)</li>';
-    }.bind(this), function() {
-      console.log('DB 接続 プラグインが動作しないため WebSQL 使用');
-      this._openWebSqlDb();
-    }.bind(this));
+    window.resolveLocalFileSystemURL(cordova.file.tempDirectory + this.fileName, function(fileSystem) {
+      if(fileSystem.isFile) {
+        console.log('ファイル存在確認 存在する');
+        document.getElementById('results').innerHTML = '<li>ファイルは存在します</li>';
+        return true;
+      }
+      else {
+        console.log('ファイル存在確認 存在しない');
+        document.getElementById('results').innerHTML = '<li>ファイルは存在しません</li>';
+        return false;
+      }
+    }.bind(this), function(error) {
+      console.log('ファイル存在確認 Resolve エラー', error);
+      if(error.code === 1) {
+        document.getElementById('results').innerHTML = '<li class="error">ファイルは存在しません : ' + error.code + '</li>';
+      }
+      else {
+        document.getElementById('results').innerHTML = '<li class="error">ファイル存在確認中にエラーが発生しました : ' + error.code + '</li>';
+      }
+    });
   },
   
-  // WebSQL を使用した DB 接続処理 (プラグイン未対応時に使用)
-  // ------------------------------------------------------------
-  _openWebSqlDb: function() {
-    console.log('WebSQL を使用した DB 接続処理 開始');
-    
-    if(!window.openDatabase) {
-      console.log('window.openDatabase がないため DB 接続不可');
-      document.getElementById('results').innerHTML = '<li class="error">window.openDatabase がないため DB 接続ができません</li>';
-      return;
-    }
-    
-    try {
-      this.db = window.openDatabase(
-        'sample.db',
-        '1.0',
-        'sample',
-        10000000
-      );
-      
-      document.getElementById('results').innerHTML = '<li>DB 接続 成功 (WebSQL 使用)</li>';
-    }
-    catch(error) {
-      console.log('WebSQL を使用した DB 接続処理 失敗 : ' + error);
-      document.getElementById('results').innerHTML = '<li class="error">DB 接続に失敗しました : ' + error + '</li>';
-    }
-  },
-  
-  // テーブル作成・データ投入
+  // ファイル生成 (既に存在している場合は新たに上書きする)
   // ------------------------------------------------------------
   create: function() {
-    console.log('テーブル作成・データ投入 開始');
-    
-    if(!this.db) {
-      console.log('テーブル作成・データ投入 処理前に DB 接続')
-      this.openDb();
+    console.log('ファイル生成 開始');
+
+    var options = {
+      create: true,     // ファイルを新規生成する
+      exclusive: false  // ファイルが存在する場合にエラーにしない
     }
     
-    this.db.transaction(function(tx) {
-      tx.executeSql('CREATE TABLE IF NOT EXISTS SampleTable (id INTEGER PRIMARY KEY, name TEXT, age INTEGER)');
-      tx.executeSql('REPLACE INTO SampleTable VALUES (?, ?, ?)', [1, 'ほげ', 18]);
-      tx.executeSql('REPLACE INTO SampleTable VALUES (?, ?, ?)', [2, 'ぴよ', 20]);
-    }, function(error) {
-      console.log('テーブル作成・データ投入 失敗 : ' + error.message);
-      document.getElementById('results').innerHTML = '<li class="error">テーブル作成・データ投入 失敗 : ' + error + '</li>';
-    }, function() {
-      console.log('テーブル作成・データ投入 成功');
-      document.getElementById('results').innerHTML = '<li>テーブル作成・データ投入 成功</li>';
-      // 続けて取得処理も行いたい場合はココで取得処理を呼び出したりすれば OK
-      // this.select();
-    });
-  },
-  
-  // データ取得
-  // ------------------------------------------------------------
-  select: function() {
-    console.log('データ取得 開始');
-    
-    if(!this.db) {
-      console.log('データ取得 処理前に DB 接続')
-      this.openDb();
-    }
-    
-    this.db.transaction(function(tx) {
-      tx.executeSql('SELECT * FROM SampleTable', [], function(tx, sqlResultSet) {
-        console.log('データ取得 成功');
-        console.log('取得件数 : ' + sqlResultSet.rows.length);
-        
-        // 結果リストの HTML を保持する変数
-        var results = '';
-        
-        // 結果を1件ずつ取得する
-        for(var i = 0; i < sqlResultSet.rows.length; i++) {
-          var row = sqlResultSet.rows.item(i);
-          var rowData = '[' + (i + 1) + ' 行目] ' + row.name + ' , ' + row.age + '歳';
-          // 1行のリストを生成し results に結合する
-          results += '<li>' + rowData + '</li>';
-          // デバッグ用
-          console.log(rowData);
-        }
-        
-        // 結果表示欄に追加する
-        document.getElementById('results').innerHTML = results;
-      }, function(tx, error) {
-        console.log('データ取得 失敗 : ' + error.message);
-        document.getElementById('results').innerHTML = '<li class="error">データ取得 失敗 : ' + error.message + '</li>';
+    window.resolveLocalFileSystemURL(cordova.file.tempDirectory, function(fileSystem) {
+      fileSystem.getFile(this.fileName, options, function(result) {
+        console.log('ファイル生成 完了', result);
+        document.getElementById('results').innerHTML = '<li>ファイル生成完了</li>';
+      }, function(getFileError) {
+        console.log('ファイル生成 GetFile エラー', getFileError);
+        document.getElementById('results').innerHTML = '<li class="error">ファイルの新規生成中にエラーが発生しました : ' + getFileError.code + '</li>';
       });
+    }.bind(this), function(error) {
+      console.log('ファイル生成 Resolve エラー', error);
+      document.getElementById('results').innerHTML = '<li class="error">ファイル取得処理中にエラーが発生しました : ' + error.code + '</li>';
+    })
+  },
+  
+  // ファイル追記
+  // ------------------------------------------------------------
+  append: function() {
+    console.log('ファイル追記 開始');
+    
+    window.resolveLocalFileSystemURL(cordova.file.tempDirectory, function(fileSystem) {
+      fileSystem.getFile(this.fileName, { create: false }, function(fileEntry) {
+        fileEntry.createWriter(function(writer) {
+          // ファイルの末尾まで移動する
+          writer.seek(writer.length);
+          // 書き込み終了時の処理
+          writer.onwriteend = function(event) {
+            if(this.error) {
+              console.log('ファイル追記 追記エラー', this.error, event);
+              document.getElementById('results').innerHTML = '<li class="error">ファイル追記に失敗しました : ' + this.error + '</li>';
+            }
+            else {
+              console.log('ファイル追記 完了', event);
+              document.getElementById('results').innerHTML = '<li>ファイル追記完了</li>';
+            }
+          };
+          // 現在日時 + 改行コードを書き込む
+          var text = new Date() + '¥n';
+          writer.write(text);
+        });
+      }, function(getFileError) {
+        console.log('ファイル追記 GetFile エラー', getFileError);
+        if(getFileError.code === 1) {
+          document.getElementById('results').innerHTML = '<li class="error">ファイルが存在しないため追記できません : ' + getFileError.code + '</li>';
+        }
+        else {
+          document.getElementById('results').innerHTML = '<li class="error">ファイル追記処理中にエラーが発生しました : ' + getFileError.code + '</li>';
+        }
+      });
+    }.bind(this), function(error) {
+      console.log('ファイル追記 Resolve エラー', error);
+      document.getElementById('results').innerHTML = '<li class="error">ファイル取得処理中にエラーが発生しました : ' + error.code + '</li>';
     });
   },
   
-  // テーブル削除
+  // ファイル読込
   // ------------------------------------------------------------
-  drop: function() {
-    console.log('テーブル削除 開始');
+  read: function() {
+    console.log('ファイル読込 開始');
     
-    if(!this.db) {
-      console.log('テーブル削除 処理前に DB 接続')
-      this.openDb();
-    }
-    
-    this.db.transaction(function(tx) {
-      tx.executeSql('DROP TABLE IF EXISTS SampleTable');
-    }, function(error) {
-      console.log('テーブル削除 失敗 : ' + error.message);
-      document.getElementById('results').innerHTML = '<li class="error">テーブル削除 失敗 : ' + error.message + '</li>';
-    }, function() {
-      console.log('テーブル削除 成功');
-      document.getElementById('results').innerHTML = '<li>テーブル削除 成功</li>';
+    window.resolveLocalFileSystemURL(cordova.file.tempDirectory, function(fileSystem) {
+      fileSystem.getFile(this.fileName, { create: false }, function(fileEntry) {
+        fileEntry.file(function(fileData) {
+          var reader = new FileReader();
+          // ファイル読込後の処理
+          reader.onloadend = function(event) {
+            if(event.target.result !== undefined || event.target.result !== null) {
+              // 正常
+              console.log('ファイル読込 完了', event.target.result, event);
+              // 改行 ¥n を <br> に変換して表示する
+              document.getElementById('results').innerHTML = '<li>ファイル読込完了 : <pre>' + event.target.result.replace(/(¥r¥n|¥n|¥r)/gm, '<br>') + '</pre></li>';
+            }
+            else if(event.target.error !== undefined || event.target.error !== null) {
+              console.log('ファイル読込 エラー', event.target.error, event);
+              document.getElementById('results').innerHTML = '<li class="error">ファイル読込エラー : ' + event.target.error + '</li>';
+            }
+            else {
+              console.log('ファイル読込 原因不明エラー');
+              document.getElementById('results').innerHTML = '<li class="error">ファイル読込エラー</li>';
+            }
+          };
+          reader.readAsText(fileData);
+        });
+      }, function(getFileError) {
+        console.log('ファイル読込 GetFile エラー', getFileError);
+        if(getFileError.code === 1) {
+          document.getElementById('results').innerHTML = '<li class="error">ファイルが存在しないため読込できません : ' + getFileError.code + '</li>';
+        }
+        else {
+          document.getElementById('results').innerHTML = '<li class="error">ファイル読込処理中にエラーが発生しました : ' + getFileError.code + '</li>';
+        }
+      });
+    }.bind(this), function(error) {
+      console.log('ファイル読込 Resolve エラー', error);
+      document.getElementById('results').innerHTML = '<li class="error">ファイル取得処理中にエラーが発生しました : ' + error.code + '</li>';
+    });
+  },
+  
+  // ファイル削除
+  // ------------------------------------------------------------
+  delete: function() {
+    console.log('ファイル削除 開始');
+
+    window.resolveLocalFileSystemURL(cordova.file.tempDirectory, function(fileSystem) {
+      fileSystem.getFile(this.fileName, { create: false }, function(fileEntry) {
+        fileEntry.remove(function() {
+          console.log('ファイル削除 成功');
+          document.getElementById('results').innerHTML = '<li>ファイル削除完了</li>';
+        }, function(removeError) {
+          console.log('ファイル削除 失敗', removeError);
+          document.getElementById('results').innerHTML = '<li>ファイル削除に失敗しました : ' + removeError + '</li>';
+        });
+      }, function(getFileError) {
+        console.log('ファイル削除 GetFile エラー', getFileError);
+        if(getFileError.code === 1) {
+          document.getElementById('results').innerHTML = '<li class="error">ファイルが存在しないため削除できません : ' + getFileError.code + '</li>';
+        }
+        else {
+          document.getElementById('results').innerHTML = '<li class="error">ファイル削除処理中にエラーが発生しました : ' + getFileError.code + '</li>';
+        }
+      });
+    }.bind(this), function(error) {
+      console.log('ファイル削除 Resolve エラー', error);
+      document.getElementById('results').innerHTML = '<li class="error">ファイル取得処理中にエラーが発生しました : ' + error.code + '</li>';
     });
   }
 }

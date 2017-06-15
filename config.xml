@@ -31,4 +31,5 @@
     <preference name="StatusBarOverlaysWebView" value="false" />
     <preference name="StatusBarBackgroundColor" value="#0088ff" />
     <preference name="StatusBarStyle" value="lightcontent" />
+    <plugin name="cordova-plugin-file" spec="~4.3.3" />
 </widget>
