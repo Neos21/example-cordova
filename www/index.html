@@ -12,11 +12,13 @@
   <body>
     <div id="wrapper">
       <h1>cordova-sqlite-plugin</h1>
+      <p><code>cordova.file.tempDirectory</code> 配下に <code>Temp.txt</code> を生成・操作します。</p>
       <ul>
-        <li><input type="button" id="open-db" value="DB 接続処理"></li>
-        <li><input type="button" id="create" value="テーブル作成・データ投入"></li>
-        <li><input type="button" id="select" value="データ取得"></li>
-        <li><input type="button" id="drop" value="テーブル削除"></li>
+        <li><input type="button" id="check" value="ファイル存在確認"></li>
+        <li><input type="button" id="create" value="ファイル生成"></li>
+        <li><input type="button" id="append" value="ファイル追記"></li>
+        <li><input type="button" id="read" value="ファイル読込"></li>
+        <li><input type="button" id="delete" value="ファイル削除"></li>
       </ul>
       <ul id="results"></ul>
     </div>
