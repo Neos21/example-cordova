@@ -10,8 +10,8 @@ var app = {
   init: function() {
     console.log('初期処理');
     
-    document.addEventListener("DOMContentLoaded", function() {
-      console.log("DOM 構築完了 → イベント定義");
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM 構築完了 → イベント定義');
       
       document.getElementById('open-db').addEventListener('click', this.openDb.bind(this), false);
       document.getElementById('create').addEventListener('click', this.create.bind(this), false);
@@ -161,7 +161,7 @@ var app = {
       document.getElementById('results').innerHTML = '<li>テーブル削除 成功</li>';
     });
   }
-}
+};
 
 // 初期処理を実行する
 app.init();
