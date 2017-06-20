@@ -11,14 +11,14 @@
   </head>
   <body>
     <div id="wrapper">
-      <h1>cordova-sqlite-plugin</h1>
-      <p><code>cordova.file.tempDirectory</code> 配下に <code>Temp.txt</code> を生成・操作します。</p>
+      <h1>cordova-plugin-googlemaps</h1>
+      <!-- 以下の #map の領域に Google マップが表示される -->
+      <div id="map-wrapper">
+        <div id="map"></div>
+      </div>
       <ul>
-        <li><input type="button" id="check" value="ファイル存在確認"></li>
-        <li><input type="button" id="create" value="ファイル生成"></li>
-        <li><input type="button" id="append" value="ファイル追記"></li>
-        <li><input type="button" id="read" value="ファイル読込"></li>
-        <li><input type="button" id="delete" value="ファイル削除"></li>
+        <li><input type="text" id="address" value=""><input type="button" id="search" value="住所検索"></li>
+        <li><a href="./index.html">ページ再読込</a></li>
       </ul>
       <ul id="results"></ul>
     </div>

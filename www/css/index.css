@@ -2,3 +2,18 @@
 ul#results > li.error {
   color: #f00;
 }
+
+/* 
+ * ステータスバープラグインを導入している場合
+ * ステータスバーの高さ 20px 分だけ表示位置が上にズレてしまうため
+ * ズレる分を考慮して padding を設定しておく
+ */
+#map-wrapper {
+  padding-top: 20px;
+}
+
+/* マップの表示領域 */
+#map {
+  width: 100%;
+  height: 300px;
+}
