@@ -2,20 +2,30 @@
 
 Cordova を使って iOS アプリを作成するサンプル。
 
-# GoogleMaps
+# How To Use?
 
-cordova-plugin-googlemaps を導入して、Google Maps を操作する。
+Cordova というフレームワークを使用し iOS アプリをビルドするため、XCode および iOS シミュレータをインストールしておいてください。
 
-Google Maps API にアクセスするため、事前に Google APIs で iOS アプリ用の API キーを払い出しておく必要がある。以下の Google Maps API のページにある「キーの取得」リンクから進められる。
-
-- [Google Maps API](https://developers.google.com/maps/web/)
-- 参考：[ねんでぶろぐ - Google Maps の APIキー を簡単に取得する](https://nendeb.com/276)
-
-プラグインのインストール時に API キーが必要になる。この情報は `config.xml` に記載されるため、あとから修正することも可能。
+Cordova プロジェクトの操作のため、npm にて Cordova をグローバルインストールする必要があります。本プロジェクトの開発には cordova@7.0.1 を使用しています。
 
 ```sh
-# プラグインをインストールする
-$ cordova plugin add cordova-plugin-googlemaps --variable API_KEY_FOR_IOS="ココに生成した API キーを入れる" --save
+# Cordova のグローバルインストール
+$ npm install -g cordova
 ```
 
-アプリを開いた時に Google マップの領域がグレーで、左下にロゴだけが出ている状態の場合は、API キーの認証が正しく通っていない場合が多い。`config.xml` に記載の API キーは正しいか、Google APIs に登録している「リクエストを受け入れる iOS アプリのバンドル ID」が `config.xml` に記載の識別子と一致しているか、などを確認したい。
+各ブランチ単独で動作するよう、最小限のアプリを作っています。`git clone` 後、任意のブランチに切り替えたら、以下のようにして Cordova プロジェクトをビルドしてみてください。
+
+```sh
+# config.xml に記載のプラットフォーム・プラグインを復元する
+$ cordova prepare
+
+# iOS 向けのビルドとシミュレータ起動
+$ cordova serve ios
+```
+
+プラグインの対応状況によりますが、Mac のブラウザで簡易的な確認もできます。
+
+```sh
+# ブラウザ用にビルドし、簡易サーバを起動する
+$ cordova serve browser
+```
