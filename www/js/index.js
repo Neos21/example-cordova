@@ -10,8 +10,8 @@ var app = {
   init: function() {
     console.log('初期処理');
     
-    document.addEventListener("DOMContentLoaded", function() {
-      console.log("DOM 構築完了 → イベント定義");
+    document.addEventListener('DOMContentLoaded', function() {
+      console.log('DOM 構築完了 → イベント定義');
       
       document.getElementById('check').addEventListener('click', this.check.bind(this), false);
       document.getElementById('create').addEventListener('click', this.create.bind(this), false);
@@ -183,7 +183,7 @@ var app = {
       document.getElementById('results').innerHTML = '<li class="error">ファイル取得処理中にエラーが発生しました : ' + error.code + '</li>';
     });
   }
-}
+};
 
 // 初期処理を実行する
 app.init();
