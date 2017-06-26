@@ -1,1 +1,4 @@
-/* Nothing */
+/* エラー時の結果表示 */
+ul#results > li.error {
+  color: #f00;
+}
