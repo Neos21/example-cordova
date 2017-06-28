@@ -35,4 +35,5 @@
     <plugin name="cordova-plugin-googlemaps" spec="~1.4.0">
         <variable name="API_KEY_FOR_IOS" value="Your API Key Here" />
     </plugin>
+    <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.7" />
 </widget>
