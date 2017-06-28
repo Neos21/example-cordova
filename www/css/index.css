@@ -1,1 +1,9 @@
-/* Nothing */
+/* エラー時の結果表示 */
+ul#results > li.error {
+  color: #f00;
+}
+
+/* ビープ回数のナンバー欄 */
+#beep-times {
+  width: 50px;
+}

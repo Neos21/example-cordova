@@ -36,4 +36,5 @@
         <variable name="API_KEY_FOR_IOS" value="Your API Key Here" />
     </plugin>
     <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.7" />
+    <plugin name="cordova-plugin-dialogs" spec="~1.3.3" />
 </widget>

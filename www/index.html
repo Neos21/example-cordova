@@ -11,7 +11,15 @@
   </head>
   <body>
     <div id="wrapper">
-      <h1>CordovaExamples</h1>
+      <h1>cordova-plugin-dialogs</h1>
+      <p>アラートを表示したり、ビープ音を鳴らしたりします。</p>
+      <ul>
+        <li><input type="button" id="alert" value="アラート"></li>
+        <li><input type="button" id="confirm" value="確認ダイアログ"></li>
+        <li><input type="button" id="prompt" value="プロンプト"></li>
+        <li><input type="button" id="beep" value="ビープ"> : <input type="number" id="beep-times" value="1" min="1" max="9" required> 回鳴らす</li>
+      </ul>
+      <ul id="results"></ul>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
