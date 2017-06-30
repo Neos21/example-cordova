@@ -37,4 +37,8 @@
     </plugin>
     <plugin name="cordova-plugin-bluetooth-serial" spec="~0.4.7" />
     <plugin name="cordova-plugin-dialogs" spec="~1.3.3" />
+    <plugin name="cordova-plugin-camera-preview" spec="~0.9.0" />
+    <config-file platform="ios" target="*-Info.plist" parent="NSCameraUsageDescription">
+        <string>Allow the app to use your camera</string>
+    </config-file>
 </widget>

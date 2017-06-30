@@ -12,6 +12,31 @@
   <body>
     <div id="wrapper">
       <h1>CordovaExamples</h1>
+      <div id="controllers">
+        <select id="start-camera">
+          <option value="" selected>Start Camera</option>
+          <option value="tap-photo">Tap Photo Mode</option>
+          <option value="to-back">To Back Mode</option>
+          <option value="preview-drag">Preview Drag Mode</option>
+        </select>
+        
+        <input type="button" id="take-picture" value="撮影">
+        <input type="button" id="stop" value="終了">
+        <input type="button" id="switch" value="切替">
+        <input type="button" id="show" value="表示">
+        <input type="button" id="hide" value="非表示">
+        
+        <select id="color-effect">
+          <option value="" selected>Color Effect</option>
+        </select>
+        
+        <select id="flash-mode">
+          <option value="" selected>Flash Mode</option>
+        </select>
+      </div>
+      <div id="result">
+        <img src="result-photo">
+      </div>
     </div>
     <script type="text/javascript" src="cordova.js"></script>
     <script type="text/javascript" src="js/index.js"></script>
