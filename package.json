@@ -1,17 +1,13 @@
 {
   "name": "cordova-examples",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "description": "Cordova Examples",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Neos21GitHub/CordovaExamples.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Neo <neos21@gmail.com> (http://neo.s21.xrea.com/)",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Neos21GitHub/CordovaExamples/issues"
   },
