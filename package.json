@@ -2,16 +2,20 @@
   "name": "cordova-examples",
   "version": "1.0.0",
   "description": "Cordova Examples",
+  "author": "Neo <neos21@gmail.com> (https://neos21.net/)",
+  "license": "MIT",
+  "homepage": "https://github.com/Neos21/CordovaExamples#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Neos21/CordovaExamples.git"
   },
-  "author": "Neo <neos21@gmail.com> (http://neo.s21.xrea.com/)",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/Neos21/CordovaExamples/issues"
   },
-  "homepage": "https://github.com/Neos21/CordovaExamples#readme",
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/Neos21"
+  },
   "devDependencies": {
     "cordova": "7.0.1"
   }
